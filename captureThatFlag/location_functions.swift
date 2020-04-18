@@ -12,8 +12,8 @@ import MapKit
 
 // generates a random location to be added 
 func randomPositionForLoc(latitude: Double, longitude: Double) -> (latRandom: Double, longRandom: Double)  {
-    var randomX = Double.random(in: 0.0 ..< 0.10)
-    var randomY = Double.random(in: 0.0 ..< 0.10)
+    var randomX = Double.random(in: 0.0 ..< 0.1)
+    var randomY = Double.random(in: 0.0 ..< 0.1)
     var determine = Double.random(in: 0 ..< 2)
     
     while randomX == 0 && randomY == 0 {
