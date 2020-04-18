@@ -12,8 +12,8 @@ import MapKit
 
 // generates a random location to be added 
 func randomPositionForLoc(latitude: Double, longitude: Double) -> (latRandom: Double, longRandom: Double)  {
-    var randomX = Double.random(in: 0.0 ..< 0.10)
-    var randomY = Double.random(in: 0.0 ..< 0.10)
+    var randomX = Double.random(in: 0.0 ..< 0.1)
+    var randomY = Double.random(in: 0.0 ..< 0.1)
     var determine = Double.random(in: 0 ..< 2)
     
     while randomX == 0 && randomY == 0 {
@@ -44,8 +44,8 @@ func createAnnotation(locationManager: CLLocationManager) -> (Double, Double, MK
     let randomXY = randomPositionForLoc(latitude: startingLocationX, longitude: startingLocationY)
     
     let dest1 = MKPointAnnotation()
-    dest1.coordinate.latitude = randomXY.latRandom
-    dest1.coordinate.longitude = randomXY.longRandom
+    dest1.coordinate.latitude = 42.355900//randomXY.latRandom
+    dest1.coordinate.longitude = -71.159920//randomXY.longRandom
     
     return (startingLocationX, startingLocationY, dest1)
 }

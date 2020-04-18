@@ -11,16 +11,22 @@ import UIKit
 class gameSession  {
     var timeAmount: Int
     var timer: Timer
-    var timeLeft: String
+    var label:UILabel
     var locationManger: CLLocationManager
     var endGame: CLLocation
+    var result:UILabel
+    var announcment:UIView
+    var view: UIView
     
-    init(timeAmount: Int, timer: Timer, timeLeft: String, locationManger: CLLocationManager, endGame: CLLocation) {
+    init(timeAmount: Int, timer: Timer, locationManger: CLLocationManager, endGame: CLLocation, label: UILabel, result: UILabel, announcment: UIView, view: UIView) {
         self.timeAmount = timeAmount
         self.timer = timer
-        self.timeLeft = timeLeft
         self.locationManger = locationManger
         self.endGame = endGame
+        self.label = label
+        self.result = result
+        self.announcment = announcment
+        self.view = view
     }
     
     func startTimer() {
@@ -32,12 +38,13 @@ class gameSession  {
     }
 
     @objc func test() {
-        print("Yes")
         timeAmount -= 1
-        timeLeft = String(timeAmount)
-        if timeAmount == 0 {
+        label.text = String(timeAmount)
+        if win() || timeAmount == 0 {
             timer.invalidate()
+            showResults()
         }
+        
     }
     func checkDis() -> Double {
         //https://www.movable-type.co.uk/scripts/latlong.html
@@ -72,18 +79,29 @@ class gameSession  {
     func win() -> Bool {
         var result = false
         let amountDist = checkDis()
-        if (amountDist < 40 && timeAmount > 0) {
-            timeLeft = String(timeAmount)
-            print("The current value of amountDist is \(amountDist)")
+        
+        if (amountDist < 20 && timeAmount > 0) { // before 40
             result = true
         }
-        
         return result
+    }
+    
+    func showResults() {
+        if win() {
+            result.textColor = UIColor.green
+            result.text = "YOU WIN"
+        } else {
+            result.textColor = UIColor.red
+            result.text = "YOU LOST"
+        }
+        announcment.center = view.center
+        view.addSubview(announcment)
     }
     
     func resetGameVariables(newLocation: CLLocation) {
         timeAmount = 720
-        timeLeft = String(timeAmount)
+        label.text = String(timeAmount)
         endGame = newLocation
     }
+    
 }
