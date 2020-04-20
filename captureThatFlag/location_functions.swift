@@ -12,8 +12,8 @@ import MapKit
 
 // generates a random location to be added 
 func randomPositionForLoc(latitude: Double, longitude: Double) -> (latRandom: Double, longRandom: Double)  {
-    var randomX = Double.random(in: 0.0 ..< 0.10)
-    var randomY = Double.random(in: 0.0 ..< 0.10)
+    var randomX = Double.random(in: 0.0 ..< 0.1)
+    var randomY = Double.random(in: 0.0 ..< 0.1)
     var determine = Double.random(in: 0 ..< 2)
     
     while randomX == 0 && randomY == 0 {
@@ -35,19 +35,23 @@ func randomPositionForLoc(latitude: Double, longitude: Double) -> (latRandom: Do
 
 // create the landmark to add onto the map
 
-func createAnnotation(locationManager: CLLocationManager) -> (Double, Double, MKPointAnnotation) {
-    let startingLocation = locationManager.location?.coordinate
-    let startingLocationX = startingLocation?.latitude ?? 0.0
-    let startingLocationY = startingLocation?.longitude ?? 0.0
-      
-      
-    let randomXY = randomPositionForLoc(latitude: startingLocationX, longitude: startingLocationY)
+func createAnnotation(startingLocationLat: Double, startingLocationLong: Double, destinationArray: Array<MKPointAnnotation>) -> Array<MKPointAnnotation> {
     
-    let dest1 = MKPointAnnotation()
-    dest1.coordinate.latitude = randomXY.latRandom
-    dest1.coordinate.longitude = randomXY.longRandom
+    var destinations = destinationArray
+    var aDestination = MKPointAnnotation()
     
-    return (startingLocationX, startingLocationY, dest1)
+    var randomXY = (0.0, 0.0)
+    
+    for _ in 1...8 {
+        randomXY = randomPositionForLoc(latitude: startingLocationLat, longitude: startingLocationLong)
+        aDestination.coordinate.latitude = randomXY.0
+        aDestination.coordinate.longitude = randomXY.1
+        
+        destinations.append(aDestination)
+        aDestination = MKPointAnnotation()
+    }
+    
+    return destinations
 }
 
 // zoom in to display a birds eye view of the infrastructure you are around
