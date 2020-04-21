@@ -12,7 +12,7 @@ extension gameSession {
     
     func checkDist() {
         
-        for x in 0...6 {
+        for x in 0...7 {
             
             amountDisp[x] = calcDist(position: x+1)
             if (amountDisp[x] < 20 && timeAmount > 0) { // before 40
