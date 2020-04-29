@@ -7,7 +7,6 @@
 //
 import UIKit
 import MapKit
-import Darwin
 
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
@@ -29,18 +28,18 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet var yellowFlag: UIImageView!
     //
     var flags = [UIImageView]()
-    let locationManager = CLLocationManager()
+    let locationManager = CLLocationManager() // using the object from core location
     
     
     var startGame = false
     
     
-    var dest1 = MKPointAnnotation()
+    var dest1 = MKPointAnnotation() // delete this
     
-    var amountTime = 1800  //
+    var amountTime = 1800  // plus 1 second to give it a start  
     var timer = Timer()
     var gameRecord: gameSession!
-    var stringtimeLeft = ""
+    var stringtimeLeft = "" //
     var nameFlags = ["black", "blue", "green", "pink", "purple", "red", "white", "yellow"]
     
 
@@ -51,10 +50,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         // Do any additional setup after loading the view.
         if !(startGame) {
+            //below block is learned from https://www.youtube.com/watch?v=nhUHzst6x1U&t=854s
+            // you cant do it any other way
             mapkitView.delegate = self
             mapkitView.showsUserLocation = true
             
-            // this allows the app to gain access to your location
+            // same goes for this block: https://www.youtube.com/watch?v=nhUHzst6x1U&t=854s
             locationManager.requestAlwaysAuthorization()
             locationManager.requestWhenInUseAuthorization()
             
@@ -68,27 +69,30 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     func beforeGame() {
         
-        // this makes sure we have access so we can continue
+        
         if CLLocationManager.locationServicesEnabled() {
+            //below block is learned fromhttps://www.youtube.com/watch?v=nhUHzst6x1U&t=854s
+            // video is called: Getting Directions! (MapKit | Swift 3 in Xcode) by Archetapp
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
             
-            // setting the region so it can zoom in
+            //
             landMark = createAnnotation(startingLocationLat: (locationManager.location?.coordinate.latitude ?? 0.0), startingLocationLong: (locationManager.location?.coordinate.longitude ?? 0.0), destinationArray: landMark)
-            mapkitView.setRegion(zoomIn(startingLocationX: landMark[0].coordinate.latitude, startingLocationY: landMark[0].coordinate.longitude), animated: !startGame)
         }
     }
     
-    // easier to check if in ithe circle
-    //https://developer.apple.com/documentation/corelocation/clcircularregion
     
     @IBAction func beginGame(_ sender: Any) {
+        
+        mapkitView.setRegion(zoomIn(startingLocationX: landMark[0].coordinate.latitude, startingLocationY: landMark[0].coordinate.longitude), animated: !startGame)
         
         if !(startGame) {
             flags = [blackFlag, blueFlag, greenFlag, pinkFlag, purpleFlag, redFlag, whiteFlag, yellowFlag]
             hideFlag(flags: flags)
             
+            // how to add annotations came from https://www.youtube.com/watch?v=936-KHll9Ao
+            // called Custom Annotation Pin MapView (Swift 4 + Xcode 9.0) by PlanetVeracity
             for x in 1...8 {
                 mapkitView.addAnnotation(landMark[x])
             }
@@ -100,6 +104,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     @IBAction func exitView(_ sender: Any) {
+        // removing the view
         self.announcment.removeFromSuperview()
     }
     @IBAction func resetGame(_ sender: Any) {

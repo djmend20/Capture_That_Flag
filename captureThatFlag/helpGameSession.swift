@@ -13,9 +13,9 @@ extension gameSession {
     func checkDist() {
         
         for x in 0...7 {
-            
+            // calculating the distance of all flags
             amountDisp[x] = calcDist(position: x+1)
-            if (amountDisp[x] < 20 && timeAmount > 0) { // before 40
+            if (amountDisp[x] < 20 && timeAmount > 0) { 
                 dispFlag[x] = true
                 mapView.removeAnnotation(endGame[x+1])
             }
@@ -24,7 +24,9 @@ extension gameSession {
     func calcDist(position: Int) -> Double {
         //https://www.movable-type.co.uk/scripts/latlong.html
         // https://stackoverflow.com/questions/26324050/how-to-get-mathemical-pi-constant-in-swift
-        
+        // the links from the above code informs of the formular and how to get
+        // pi by using that information found out what framework has the other math
+        // functions by trial and error 
         let currLocationLat = self.locationManger.location?.coordinate.latitude ?? 0.0
         let currLocationLong = self.locationManger.location?.coordinate.longitude ?? 0.0
         
@@ -47,25 +49,5 @@ extension gameSession {
         
         return distance
     }
-    
-    @objc func test() {
-        
-        timeAmount -= 1
-        
-        let minute = Int(timeAmount / 60)
-        let minute_floatVal = Double(Double(timeAmount) / 60.0)
-        let seconds = Int(Double((minute_floatVal - Double(timeAmount / 60)) * 60.0).rounded())
-        
-        if minute == 0 && timeAmount != 0 {
-            label.text = String(1) + String(seconds)
-        } else {
-            label.text = String(minute) + ":" + String(seconds)
-        }
-        
-        if win() || timeAmount == 0 {
-            timer.invalidate()
-            showResults()
-        }
-        
-    }
+
 }

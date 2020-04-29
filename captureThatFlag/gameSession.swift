@@ -4,7 +4,6 @@
 //  Created by David Mendoza on 4/17/20.
 //  Copyright © 2020 DB. All rights reserved.
 //
-import Foundation
 import MapKit
 import UIKit
 
@@ -38,20 +37,43 @@ class gameSession  {
     }
     
     func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(test), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
     }
     
-    func stopTimer() -> Void{
-        timer.invalidate()
-    }
     
     // checks the distance and updates them
+    @objc func countDown() { // was changed from test to countdown
+        
+        // since we are importing the framework foundation
+        // best to use one of the functions provided from
+        // the class DateComponentsFormatter to format the time
+        // left
+        let formatTimeLeft = DateComponentsFormatter()
+        let formatSec : String
+        
+        formatTimeLeft.unitsStyle = .abbreviated
+        formatTimeLeft.allowedUnits = [.minute, .second]
+
+        formatSec = formatTimeLeft.string(from: Double(timeAmount)) ?? "AA"
+        
+        label.text = formatSec
+        
+        if win() || timeAmount == 0 {
+            timer.invalidate()
+            showResults()
+        }
+        // occurs last so that you have the total time
+        timeAmount -= 1
+    }
     
     func win() -> Bool {
         var result = true
-        
+        // calculate the distance to check
+        // if you have obtained any flags
         checkDist()
         
+        // checking if the user obtained all
+        // the flags
         for x in 0...7 {
             
             if dispFlag[x] == false {
@@ -64,13 +86,17 @@ class gameSession  {
     }
     
     func showResults() {
+        // under the condition that person
+        // won , show that they have won
         if win() {
             result.textColor = UIColor.green
             result.text = "YOU WIN"
         } else {
+            // else show that they have lost
             result.textColor = UIColor.red
             result.text = "YOU LOST"
         }
+        // allowing to display the view
         announcment.center = view.center
         view.addSubview(announcment)
     }

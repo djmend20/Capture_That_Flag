@@ -6,21 +6,25 @@
 //  Copyright © 2020 DB. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import MapKit
 
 extension ViewController {
     
     //https://www.youtube.com/watch?v=936-KHll9Ao
+    // code copy to change annotation is everything but lines 28-54
+    // lines 24-50 allows us to select which annotation to give the flag since the scren constantly
+    // updates as you move it else after you move the screen the annotations will revert back to the
+    // ordinary annotations. Reason why this is not a switch formate is annotation can not be compared
+    // to so annotation comes with a property to compare values as seen by these if block statements
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         var positionLandMark: Int = 0
         var positionColorFlag: Int = 0
         let annotationView: MKAnnotationView
-        var transform = CGAffineTransform() // reason why not var bc it must be initialized
-        // cant use a switch in this case because its type MKAnnotation
-        // it was attempted
+        var transform = CGAffineTransform()
+
         if annotation.isEqual(landMark[1]) {
             positionLandMark = 1
             positionColorFlag = 0
